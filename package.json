@@ -1,0 +1,16 @@
+{
+  "name": "homepage-ipinfo-widget",
+  "version": "1.0.0",
+  "description": "IP信息显示widget for Homepage",
+  "scripts": {
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@mui/material": "latest",
+    "next-i18next": "latest"
+  }
+} 

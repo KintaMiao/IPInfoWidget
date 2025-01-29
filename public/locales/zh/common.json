@@ -1,0 +1,12 @@
+{
+  "widget": {
+    "ipinfo": {
+      "title": "IP信息",
+      "ip": "IP地址",
+      "location": "位置",
+      "isp": "运营商",
+      "time": "时间",
+      "userAgent": "浏览器信息"
+    }
+  }
+} 
