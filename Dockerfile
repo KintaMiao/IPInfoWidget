@@ -1,22 +1,28 @@
-# 使用Node.js作为构建环境
+# 使用 Node.js 作为构建环境
 FROM node:18-alpine AS builder
 
 # 设置工作目录
 WORKDIR /build
 
-# 复制package.json
-COPY package.json package-lock.json* ./
+# 复制 package.json 和 package-lock.json
+COPY package*.json ./
 
 # 安装依赖
-RUN npm install
+RUN npm ci
 
 # 复制源代码
 COPY . .
 
-# 构建应用
-RUN npm run build
+# 创建必要的目录结构
+RUN mkdir -p src/pages src/app
 
-# 使用Homepage官方镜像作为运行环境
+# 创建一个基本的页面
+RUN echo 'export default function Home() { return <div>Homepage Widget</div> }' > src/pages/index.js
+
+# 构建应用
+RUN npm run build || (echo "Build failed" && exit 1)
+
+# 使用 Homepage 官方镜像作为运行环境
 FROM ghcr.io/gethomepage/homepage:latest
 
 # 设置工作目录
