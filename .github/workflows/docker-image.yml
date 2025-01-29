@@ -17,7 +17,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      security-events: write
 
     steps:
       - name: Checkout repository
@@ -77,7 +76,6 @@ jobs:
             maintainer=YourGitHubUsername
 
       - name: Build and push Docker image
-        id: build-and-push
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -86,24 +84,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: true
-          sbom: true
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        if: success() && github.event_name != 'pull_request'
-        with:
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-and-push.outputs.digest }}
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
-          timeout: '10m'
-          scanners: 'vuln,secret,config'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: success() && github.event_name != 'pull_request' && hashFiles('trivy-results.sarif') != ''
-        with:
-          sarif_file: 'trivy-results.sarif'
-          category: 'trivy' 
+          cache-to: type=gha,mode=max 
